@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+    <title>Tentang Kami - Cahaya Kurnia</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content fade-in-up">
+                <h1 class="hero-title">Tentang Kami</h1>
+                <p class="hero-subtitle" th:text="${companyTagline}">Toko Perkakas dan Elektronik Terpercaya</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card fade-in-up">
+                        <div class="card-body p-5">
+                            <div class="text-center mb-5">
+                                <div class="feature-icon mx-auto mb-3">
+                                    <i class="bi bi-lightning-charge-fill"></i>
+                                </div>
+                                <h2 class="mb-3">Cahaya Kurnia</h2>
+                                <p class="lead">
+                                    Kami adalah toko perkakas dan elektronik terpercaya yang telah melayani pelanggan sejak tahun 2020. 
+                                    Dengan komitmen untuk menyediakan produk berkualitas tinggi dengan harga terjangkau.
+                                </p>
+                            </div>
+                            
+                            <div class="row mb-5">
+                                <div class="col-md-6 mb-4">
+                                    <div class="feature-card">
+                                        <div class="feature-icon">
+                                            <i class="bi bi-eye"></i>
+                                        </div>
+                                        <h4 class="feature-title">Visi Kami</h4>
+                                        <p class="feature-description">
+                                            Menjadi toko perkakas dan elektronik terdepan yang dipercaya oleh masyarakat Indonesia 
+                                            dalam menyediakan berbagai kebutuhan peralatan berkualitas.
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="feature-card">
+                                        <div class="feature-icon">
+                                            <i class="bi bi-target"></i>
+                                        </div>
+                                        <h4 class="feature-title">Misi Kami</h4>
+                                        <ul class="feature-description" style="text-align: left;">
+                                            <li>Menyediakan produk berkualitas dengan harga kompetitif</li>
+                                            <li>Memberikan pelayanan terbaik kepada pelanggan</li>
+                                            <li>Mengutamakan kepuasan dan kepercayaan pelanggan</li>
+                                            <li>Terus berinovasi dalam layanan dan produk</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-center mb-4">
+                                <h3>Nilai-Nilai Kami</h3>
+                                <p class="section-subtitle">Prinsip yang kami pegang dalam melayani pelanggan</p>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="feature-icon mx-auto mb-3" style="background: var(--primary-color);">
+                                                <i class="bi bi-award"></i>
+                                            </div>
+                                            <h5 class="card-title">Kualitas</h5>
+                                            <p class="card-text">Kami hanya menjual produk berkualitas tinggi dengan standar internasional</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="feature-icon mx-auto mb-3" style="background: var(--danger-color);">
+                                                <i class="bi bi-heart"></i>
+                                            </div>
+                                            <h5 class="card-title">Pelayanan</h5>
+                                            <p class="card-text">Pelayanan terbaik untuk kepuasan pelanggan dengan respon cepat</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="feature-icon mx-auto mb-3" style="background: var(--success-color);">
+                                                <i class="bi bi-shield-check"></i>
+                                            </div>
+                                            <h5 class="card-title">Kepercayaan</h5>
+                                            <p class="card-text">Membangun kepercayaan dengan transparansi dan integritas tinggi</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="feature-icon mx-auto mb-3" style="background: var(--warning-color);">
+                                                <i class="bi bi-lightning"></i>
+                                            </div>
+                                            <h5 class="card-title">Inovasi</h5>
+                                            <p class="card-text">Terus berinovasi dalam layanan dan teknologi untuk kemudahan pelanggan</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section" style="background: var(--gray-50);">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 mb-4">
+                    <div class="fade-in-up">
+                        <h2 class="text-primary mb-2">4+</h2>
+                        <p class="text-muted">Tahun Pengalaman</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="fade-in-up">
+                        <h2 class="text-primary mb-2">1000+</h2>
+                        <p class="text-muted">Pelanggan Puas</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="fade-in-up">
+                        <h2 class="text-primary mb-2">500+</h2>
+                        <p class="text-muted">Produk Berkualitas</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="fade-in-up">
+                        <h2 class="text-primary mb-2">24/7</h2>
+                        <p class="text-muted">Layanan Pelanggan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    
+    <!-- Scripts -->
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+</body>
+</html>

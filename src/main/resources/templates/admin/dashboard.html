@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+    <title>Admin Dashboard - Cahaya Kurnia</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Admin Header -->
+    <section class="admin-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="text-white mb-2">
+                        <i class="bi bi-speedometer2 me-3"></i>Admin Dashboard
+                    </h1>
+                    <p class="text-white-50 mb-0">Kelola produk dan pantau inventori toko</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="admin-main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar Actions -->
+                <div class="col-lg-3 col-md-4">
+                    <div class="admin-sidebar">
+                        <div class="sidebar-section">
+                            <h5 class="sidebar-title">
+                                <i class="bi bi-lightning me-2"></i>Aksi Cepat
+                            </h5>
+                            <div class="sidebar-actions">
+                                <a href="/admin/products/new" class="sidebar-action-item">
+                                    <div class="action-icon">
+                                        <i class="bi bi-plus-lg"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h6>Tambah Produk</h6>
+                                        <small>Buat produk baru</small>
+                                    </div>
+                                </a>
+                                <a href="/admin/products" class="sidebar-action-item">
+                                    <div class="action-icon">
+                                        <i class="bi bi-list-ul"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h6>Kelola Produk</h6>
+                                        <small>Edit & hapus produk</small>
+                                    </div>
+                                </a>
+                                <a href="/products" class="sidebar-action-item">
+                                    <div class="action-icon">
+                                        <i class="bi bi-eye"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h6>Lihat Toko</h6>
+                                        <small>Preview toko publik</small>
+                                    </div>
+                                </a>
+                                <a href="/admin/analytics" class="sidebar-action-item">
+                                    <div class="action-icon">
+                                        <i class="bi bi-graph-up"></i>
+                                    </div>
+                                    <div class="action-content">
+                                        <h6>Analytics</h6>
+                                        <small>Lihat statistik</small>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-section">
+                            <h5 class="sidebar-title">
+                                <i class="bi bi-info-circle me-2"></i>Informasi
+                            </h5>
+                            <div class="info-cards">
+                                <div class="info-card">
+                                    <div class="info-icon bg-primary">
+                                        <i class="bi bi-box-seam"></i>
+                                    </div>
+                                    <div class="info-content">
+                                        <h4 th:text="${totalProducts}">0</h4>
+                                        <p>Total Produk</p>
+                                    </div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-icon bg-warning">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="info-content">
+                                        <h4 th:text="${lowStockProducts}">0</h4>
+                                        <p>Stok Menipis</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="col-lg-9 col-md-8">
+                    <div class="admin-content">
+                        <!-- Statistics Cards -->
+                        <div class="row mb-4">
+                            <div class="col-lg-4 col-md-6 mb-3">
+                                <div class="stats-card fade-in-up">
+                                    <div class="stats-icon bg-primary">
+                                        <i class="bi bi-box-seam"></i>
+                                    </div>
+                                    <div class="stats-content">
+                                        <h3 class="stats-number" th:text="${totalProducts}">0</h3>
+                                        <p class="stats-label">Total Produk</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-3">
+                                <div class="stats-card fade-in-up">
+                                    <div class="stats-icon bg-warning">
+                                        <i class="bi bi-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="stats-content">
+                                        <h3 class="stats-number" th:text="${lowStockProducts}">0</h3>
+                                        <p class="stats-label">Stok Menipis</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-3">
+                                <div class="stats-card fade-in-up">
+                                    <div class="stats-icon bg-danger">
+                                        <i class="bi bi-x-circle"></i>
+                                    </div>
+                                    <div class="stats-content">
+                                        <h3 class="stats-number" th:text="${outOfStockProducts}">0</h3>
+                                        <p class="stats-label">Habis Stok</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Products Table -->
+                        <div class="card mb-4 fade-in-up">
+                            <div class="card-header">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-clock-history me-2"></i>Produk Terbaru
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>SKU</th>
+                                                <th>Nama Produk</th>
+                                                <th>Harga</th>
+                                                <th>Stok</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="product : ${recentProducts}">
+                                                <td>
+                                                    <span class="badge bg-secondary" th:text="${product.sku}">SKU-001</span>
+                                                </td>
+                                                <td th:text="${product.name}">Nama Produk</td>
+                                                <td>
+                                                    <span class="fw-bold text-success" th:text="'Rp ' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">Rp 0</span>
+                                                </td>
+                                                <td>
+                                                    <span th:class="${product.stock <= 5 ? 'badge bg-warning' : 'badge bg-success'}" 
+                                                          th:text="${product.stock}">0</span>
+                                                </td>
+                                                <td>
+                                                    <div class="btn-group" role="group">
+                                                        <a th:href="@{/admin/products/{id}/edit(id=${product.id})}" class="btn btn-sm btn-warning">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </a>
+                                                        <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-sm btn-info">
+                                                            <i class="bi bi-eye"></i>
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <a href="/admin/products" class="btn btn-primary">
+                                        <i class="bi bi-arrow-right me-2"></i>Lihat Semua Produk
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Low Stock Alert -->
+                        <div class="card border-warning fade-in-up" th:if="${!lowStockAlertProducts.isEmpty()}">
+                            <div class="card-header bg-warning text-dark">
+                                <h5 class="mb-0">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>Peringatan Stok Menipis
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>SKU</th>
+                                                <th>Nama Produk</th>
+                                                <th>Stok Tersisa</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="product : ${lowStockAlertProducts}">
+                                                <td>
+                                                    <span class="badge bg-secondary" th:text="${product.sku}">SKU-001</span>
+                                                </td>
+                                                <td th:text="${product.name}">Nama Produk</td>
+                                                <td>
+                                                    <span class="badge bg-danger" th:text="${product.stock}">0</span>
+                                                </td>
+                                                <td>
+                                                    <a th:href="@{/admin/products/{id}/edit(id=${product.id})}" class="btn btn-sm btn-warning">
+                                                        <i class="bi bi-pencil me-1"></i>Update Stok
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    
+    <!-- Scripts -->
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+</body>
+</html>

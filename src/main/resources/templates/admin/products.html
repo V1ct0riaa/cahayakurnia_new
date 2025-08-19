@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+    <title>Kelola Produk - Admin - Cahaya Kurnia</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Admin Header -->
+    <section class="admin-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="text-white mb-2">
+                        <i class="bi bi-box-seam me-3"></i>
+                        Kelola Produk
+                    </h1>
+                    <p class="text-white-50 mb-0">Tambah, edit, dan hapus produk toko</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Flash Messages -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle me-2"></i>
+            <span th:text="${successMessage}">Success</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <span th:text="${errorMessage}">Error</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div th:if="${warningMessage}" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            <span th:text="${warningMessage}">Warning</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="admin-card mb-4">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div>
+                    <h5 class="admin-card-title mb-0">
+                        <i class="bi bi-list-ul me-2"></i>
+                        Daftar Produk
+                    </h5>
+                    <small class="text-muted" th:text="'Total: ' + ${#lists.size(products)} + ' produk'">Total: 0 produk</small>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="/admin" class="btn btn-outline-primary">
+                        <i class="bi bi-arrow-left me-2"></i>
+                        Kembali ke Dashboard
+                    </a>
+                    <a href="/admin/products/new" class="btn btn-primary">
+                        <i class="bi bi-plus-lg me-2"></i>
+                        Tambah Produk
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Table -->
+        <div class="admin-card">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama</th>
+                            <th>SKU</th>
+                            <th>Harga</th>
+                            <th>Stok</th>
+                            <th>Kategori</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="product : ${products}">
+                            <td th:text="${product.id}">ID</td>
+                            <td th:text="${product.name}">Nama</td>
+                            <td th:text="${product.sku}">SKU</td>
+                            <td th:text="${product.price != null ? 'Rp ' + #numbers.formatDecimal(product.price, 1, 'COMMA', 0, 'POINT') : 'Rp 0'}">Harga</td>
+                            <td th:text="${product.stock != null ? product.stock : 0}">Stok</td>
+                            <td th:text="${product.category != null ? product.category : '-'}">Kategori</td>
+                            <td>
+                                <a th:href="@{/admin/products/{id}/edit(id=${product.id})}" class="btn btn-sm btn-primary">Edit</a>
+                                <button class="btn btn-sm btn-danger" th:onclick="'confirmDelete(\'' + ${product.id} + '\', \'' + ${product.name} + '\')'">Hapus</button>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(products)}">
+                            <td colspan="7" class="text-center py-5">
+                                <div class="text-muted">
+                                    <h5>Belum ada produk</h5>
+                                    <p>Mulai dengan menambahkan produk pertama Anda</p>
+                                    <a href="/admin/products/new" class="btn btn-primary">Tambah Produk</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">
+                        <i class="bi bi-exclamation-triangle text-danger me-2"></i>
+                        Konfirmasi Hapus
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Apakah Anda yakin ingin menghapus produk <strong id="productName"></strong>?</p>
+                    <p class="text-muted mb-0">Tindakan ini tidak dapat dibatalkan.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <form id="deleteForm" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="bi bi-trash me-2"></i>
+                            Hapus Produk
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    
+    <!-- Scripts -->
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+
+    <script>
+        function confirmDelete(productId, productName) {
+            document.getElementById('productName').textContent = productName;
+            document.getElementById('deleteForm').action = '/admin/products/' + productId + '/delete';
+            
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+            deleteModal.show();
+        }
+    </script>
+</body>
+</html>

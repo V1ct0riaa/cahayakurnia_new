@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+    <title th:text="${companyName} + ' - ' + ${companyTagline}">Cahaya Kurnia - Toko Perkakas dan Elektronik Terpercaya</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content fade-in-up">
+                <h1 class="hero-title">Cahaya Kurnia</h1>
+                <p class="hero-subtitle">
+                    Toko Perkakas dan Elektronik Terpercaya
+                </p>
+                <p class="hero-description">
+                    Menyediakan berbagai macam perkakas, elektronik, dan peralatan rumah tangga berkualitas tinggi dengan harga terjangkau.
+                </p>
+                <div class="d-flex gap-3 justify-content-center">
+                    <a href="/products" class="btn btn-primary btn-lg">
+                        <i class="bi bi-eye me-2"></i>Lihat Produk
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Categories Section -->
+    <section class="section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Kategori Produk</h2>
+                <p class="section-subtitle">Pilih kategori produk yang Anda butuhkan</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="category-card fade-in-up">
+                        <div class="category-icon">
+                            <i class="bi bi-wrench"></i>
+                        </div>
+                        <h4 class="category-title">Perkakas</h4>
+                        <p class="category-description">Bor, obeng, palu, dan perkakas lainnya</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="category-card fade-in-up">
+                        <div class="category-icon">
+                            <i class="bi bi-lightning"></i>
+                        </div>
+                        <h4 class="category-title">Elektronik</h4>
+                        <p class="category-description">Kabel, saklar, dan komponen elektronik</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="category-card fade-in-up">
+                        <div class="category-icon">
+                            <i class="bi bi-house"></i>
+                        </div>
+                        <h4 class="category-title">Rumah Tangga</h4>
+                        <p class="category-description">Peralatan dapur dan rumah tangga</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="category-card fade-in-up">
+                        <div class="category-icon">
+                            <i class="bi bi-gear"></i>
+                        </div>
+                        <h4 class="category-title">Spare Parts</h4>
+                        <p class="category-description">Suku cadang dan komponen pengganti</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products Section -->
+    <section class="section" style="background: var(--gray-100);">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Produk Unggulan</h2>
+                <p class="section-subtitle">Pilihan produk terbaik untuk kebutuhan Anda</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4" th:each="product : ${featuredProducts}">
+                    <div class="product-card fade-in-up">
+                        <div class="product-image">
+                            <img th:if="${product.imageUrl}" th:src="${product.imageUrl}" th:alt="${product.name}" class="img-fluid">
+                            <img th:unless="${product.imageUrl}" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjFmNWY5Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NzM4NyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg==" class="img-fluid" alt="No Image">
+                            <div class="product-badge" th:if="${product.stock <= 5}">
+                                <span class="badge badge-warning" th:if="${product.stock > 0}">Stok Terbatas</span>
+                                <span class="badge badge-danger" th:if="${product.stock <= 0}">Habis</span>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h5 class="product-title" th:text="${product.name}">Nama Produk</h5>
+                            <p class="product-category" th:text="${product.category}">Kategori</p>
+                            <div class="product-price" th:text="'Rp ' + ${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')}">Rp 0</div>
+                            <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-primary btn-sm w-100">Lihat Detail</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">Mengapa Memilih Kami?</h2>
+                <p class="section-subtitle">Keunggulan yang membedakan kami dari yang lain</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="bi bi-award"></i>
+                        </div>
+                        <h4 class="feature-title">Kualitas Terjamin</h4>
+                        <p class="feature-description">Produk berkualitas tinggi dengan garansi resmi dari distributor terpercaya.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="bi bi-truck"></i>
+                        </div>
+                        <h4 class="feature-title">Pengiriman Cepat</h4>
+                        <p class="feature-description">Layanan pengiriman cepat dan aman ke seluruh wilayah Indonesia.</p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="bi bi-headset"></i>
+                        </div>
+                        <h4 class="feature-title">Layanan 24/7</h4>
+                        <p class="feature-description">Customer service siap membantu Anda kapan saja dengan pelayanan terbaik.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="section" style="background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));">
+        <div class="container">
+            <div class="text-center fade-in-up">
+                <h2 class="text-white mb-3">Siap Memulai Belanja?</h2>
+                <p class="text-white-50 mb-4">Temukan produk berkualitas dengan harga terbaik hanya di Cahaya Kurnia</p>
+                <a href="/products" class="btn btn-light btn-lg">Mulai Belanja Sekarang</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Action Button -->
+    <a href="/admin" class="fab" title="Admin Panel">
+        <i class="bi bi-gear-fill"></i>
+    </a>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    
+    <!-- Scripts -->
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+</body>
+</html>

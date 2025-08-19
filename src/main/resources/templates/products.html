@@ -1,0 +1,217 @@
+<!doctype html>
+<!-- 
+    PUBLIC PRODUCTS PAGE
+    Route: /products
+    Purpose: Menampilkan katalog produk untuk pelanggan/pengunjung publik
+    Features: Filter kategori, search, tampilan card
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+	<title>Katalog Produk - Cahaya Kurnia</title>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<!-- Hero Section -->
+<section class="hero-section">
+	<div class="container">
+		<div class="hero-content fade-in-up">
+			<h1 class="hero-title">Katalog Produk</h1>
+			<p class="hero-subtitle">Temukan berbagai macam perkakas, elektronik, dan peralatan rumah tangga berkualitas tinggi</p>
+			<div class="d-flex gap-4 justify-content-center">
+				<div class="text-center">
+					<h3 class="text-white mb-0" th:text="${#lists.size(products)}">0</h3>
+					<small class="text-white-50">Produk Tersedia</small>
+				</div>
+				<div class="text-center">
+					<h3 class="text-white mb-0">100%</h3>
+					<small class="text-white-50">Kualitas Terjamin</small>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Search Section -->
+<section class="search-section">
+	<div class="container">
+		<div class="search-container">
+			<form th:action="@{/products}" method="get" class="search-form">
+				<input type="text" name="search" class="search-input" placeholder="Cari produk, kategori, atau deskripsi..." th:value="${param.search}">
+				<button type="submit" class="search-button" aria-label="Cari">
+					<i class="bi bi-search"></i>
+				</button>
+			</form>
+		</div>
+	</div>
+</section>
+
+<!-- Main Content -->
+<section class="section">
+	<div class="container">
+		<div class="row">
+			<!-- Filter Sidebar -->
+			<div class="col-lg-3 mb-4">
+				<div class="filter-sidebar">
+					<h5 class="filter-title">
+						<i class="bi bi-funnel me-2"></i>Filter & Kategori
+					</h5>
+
+					<!-- Category Filter -->
+					<div class="mb-4">
+						<h6 class="filter-title"><i class="bi bi-tags me-2"></i>Kategori</h6>
+						<a href="/products" class="filter-option" th:class="${param.category == null} ? 'filter-option active' : 'filter-option'">
+							<span>Semua Kategori</span>
+							<span class="filter-count" th:text="${#lists.size(products)}">0</span>
+						</a>
+						<a href="/products?category=perkakas" class="filter-option" th:class="${param.category == 'perkakas'} ? 'filter-option active' : 'filter-option'">
+							<span>Perkakas</span>
+							<span class="filter-count">12</span>
+						</a>
+						<a href="/products?category=elektronik" class="filter-option" th:class="${param.category == 'elektronik'} ? 'filter-option active' : 'filter-option'">
+							<span>Elektronik</span>
+							<span class="filter-count">8</span>
+						</a>
+						<a href="/products?category=rumah-tangga" class="filter-option" th:class="${param.category == 'rumah-tangga'} ? 'filter-option active' : 'filter-option'">
+							<span>Rumah Tangga</span>
+							<span class="filter-count">15</span>
+						</a>
+						<a href="/products?category=garden" class="filter-option" th:class="${param.category == 'garden'} ? 'filter-option active' : 'filter-option'">
+							<span>Garden</span>
+							<span class="filter-count">6</span>
+						</a>
+					</div>
+
+					<!-- Price Filter -->
+					<div class="mb-4">
+						<h6 class="filter-title"><i class="bi bi-currency-dollar me-2"></i>Rentang Harga</h6>
+						<a href="/products?price=0-100000" class="filter-option"><span>Dibawah Rp 100k</span></a>
+						<a href="/products?price=100000-500000" class="filter-option"><span>Rp 100k - 500k</span></a>
+						<a href="/products?price=500000-1000000" class="filter-option"><span>Rp 500k - 1M</span></a>
+						<a href="/products?price=1000000-999999999" class="filter-option"><span>Diatas Rp 1M</span></a>
+					</div>
+
+					<a href="/products" class="btn btn-outline-secondary btn-sm w-100">
+						<i class="bi bi-arrow-clockwise me-2"></i>Reset Filter
+					</a>
+				</div>
+			</div>
+
+			<!-- Products Grid -->
+			<div class="col-lg-9">
+				<!-- Results Header -->
+				<div class="card mb-4">
+					<div class="card-body">
+						<div class="d-flex justify-content-between align-items-center">
+							<div>
+								<h5 class="mb-1">
+									<span th:if="${param.search}">Hasil Pencarian: "<span th:text="${param.search}">keyword</span>"</span>
+									<span th:unless="${param.search}">Semua Produk</span>
+								</h5>
+								<small class="text-muted" th:text="${#lists.size(products)} + ' produk ditemukan'">0 produk ditemukan</small>
+							</div>
+							<div class="d-flex gap-2 view-options">
+								<button class="btn btn-outline-primary btn-sm active" onclick="setViewMode('grid')"><i class="bi bi-grid"></i></button>
+								<button class="btn btn-outline-primary btn-sm" onclick="setViewMode('list')"><i class="bi bi-list"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Products Grid -->
+				<div class="row" th:if="${!products.isEmpty()}" id="productsGrid">
+					<div class="col-lg-4 col-md-6 mb-4" th:each="product : ${products}">
+						<div class="card product-card fade-in-up">
+							<div class="product-image-container">
+								<img th:if="${product.imageUrl != null and product.imageUrl != '' and product.imageUrl != 'null'}" th:src="${product.imageUrl}" class="product-image" alt="Product Image">
+								<img th:unless="${product.imageUrl != null and product.imageUrl != '' and product.imageUrl != 'null'}" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjFmNWY5Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyMCIgZmlsbD0iIzY2NzM4NyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg==" class="product-image" alt="No Image">
+								<div class="product-badge" th:class="${product.stock <= 5 and product.stock > 0} ? 'badge-warning' : (${product.stock <= 0} ? 'badge-danger' : 'badge-success')">
+									<span th:if="${product.stock <= 5 and product.stock > 0}">Stok Menipis</span>
+									<span th:if="${product.stock <= 0}">Habis</span>
+									<span th:if="${product.stock > 5}">Tersedia</span>
+								</div>
+							</div>
+							<div class="card-body d-flex flex-column">
+								<div class="product-category" th:text="${product.category != null ? product.category : 'Umum'}">Kategori</div>
+								<h5 class="card-title" th:text="${product.name}">Nama Produk</h5>
+								<p class="card-text" th:text="${#strings.abbreviate(product.description, 80)}">Deskripsi produk</p>
+								<div class="mt-auto">
+									<div class="product-price mb-2">Rp <span th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA')}">0</span></div>
+									<div class="mb-3"><small class="text-muted"><i class="bi bi-box-seam me-1"></i>Stok: <span th:text="${product.stock}">0</span></small></div>
+									<a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-primary w-100"><i class="bi bi-eye me-2"></i>Lihat Detail</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Products List View -->
+				<div class="products-list" th:if="${!products.isEmpty()}" id="productsList" style="display: none;">
+					<div class="card mb-3" th:each="product : ${products}">
+						<div class="card-body">
+							<div class="row align-items-center">
+								<div class="col-md-2">
+									<img th:if="${product.imageUrl != null and product.imageUrl != '' and product.imageUrl != 'null'}" th:src="${product.imageUrl}" class="product-image" style="height: 100px; object-fit: cover;" alt="Product Image">
+									<img th:unless="${product.imageUrl != null and product.imageUrl != '' and product.imageUrl != 'null'}" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZjFmNWY5Ii8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzY2NzM4NyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg==" class="product-image" style="height: 100px; object-fit: cover;" alt="No Image">
+								</div>
+								<div class="col-md-4">
+									<h5 class="card-title mb-1" th:text="${product.name}">Nama Produk</h5>
+									<p class="card-text text-muted mb-2" th:text="${#strings.abbreviate(product.description, 120)}">Deskripsi</p>
+									<div class="d-flex gap-2">
+										<span class="badge bg-secondary" th:text="${product.sku}">SKU</span>
+										<span class="badge bg-light text-dark" th:text="${product.category != null ? product.category : 'Umum'}">Kategori</span>
+									</div>
+								</div>
+								<div class="col-md-2 text-center">
+									<div class="product-price mb-1">Rp <span th:text="${#numbers.formatDecimal(product.price, 0, 'POINT', 0, 'COMMA')}">0</span></div>
+									<small class="text-muted">Stok: <span th:text="${product.stock}">0</span></small>
+								</div>
+								<div class="col-md-2 text-center">
+									<div class="product-badge" th:class="${product.stock <= 5 and product.stock > 0} ? 'badge-warning' : (${product.stock <= 0} ? 'badge-danger' : 'badge-success')">
+										<span th:if="${product.stock <= 5 and product.stock > 0}">Stok Menipis</span>
+										<span th:if="${product.stock <= 0}">Habis</span>
+										<span th:if="${product.stock > 5}">Tersedia</span>
+									</div>
+								</div>
+								<div class="col-md-2 text-end">
+									<a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-primary"><i class="bi bi-eye me-2"></i>Lihat</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				<!-- Empty State -->
+				<div class="empty-state" th:if="${products.isEmpty()}">
+					<div class="empty-state-icon"><i class="bi bi-box-seam"></i></div>
+					<h3 class="empty-state-title">Tidak ada produk ditemukan</h3>
+					<p class="empty-state-description">Coba ubah filter pencarian atau kategori</p>
+					<a href="/products" class="btn btn-primary"><i class="bi bi-arrow-clockwise me-2"></i>Reset Filter</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{fragments/scripts :: scripts}"></div>
+
+<script>
+	function setViewMode(mode) {
+		const gridView = document.getElementById('productsGrid');
+		const listView = document.getElementById('productsList');
+		const buttons = document.querySelectorAll('.view-options .btn');
+		if (mode === 'grid') {
+			if (gridView) gridView.style.display = 'flex';
+			if (listView) listView.style.display = 'none';
+			buttons[0].classList.add('active');
+			buttons[1].classList.remove('active');
+		} else {
+			if (gridView) gridView.style.display = 'none';
+			if (listView) listView.style.display = 'block';
+			buttons[0].classList.remove('active');
+			buttons[1].classList.add('active');
+		}
+	}
+</script>
+</body>
+</html>

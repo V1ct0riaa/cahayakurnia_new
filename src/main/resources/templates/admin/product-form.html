@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+    <title th:text="${product.id == null ? 'Tambah Produk' : 'Edit Produk'} + ' - Cahaya Kurnia'">Form Produk - Cahaya Kurnia</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Admin Header -->
+    <section class="admin-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="text-white mb-2">
+                        <i class="bi bi-plus-circle me-3" th:if="${product.id == null}"></i>
+                        <i class="bi bi-pencil-square me-3" th:if="${product.id != null}"></i>
+                        <span th:text="${product.id == null ? 'Tambah Produk' : 'Edit Produk'}">Form Produk</span>
+                    </h1>
+                    <p class="text-white-50 mb-0" th:text="${product.id == null ? 'Tambah produk baru ke katalog toko' : 'Edit informasi produk'}">Kelola produk toko</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Form Card -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h5 class="admin-card-title">
+                            <i class="bi bi-card-text me-2"></i>
+                            <span th:text="${product.id == null ? 'Informasi Produk Baru' : 'Edit Informasi Produk'}">Form Produk</span>
+                        </h5>
+                    </div>
+                    
+                    <div class="p-4">
+                        <!-- Error Messages -->
+                        <div th:if="${skuError}" class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <span th:text="${skuError}">Error</span>
+                        </div>
+                        
+                        <div th:if="${imageError}" class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <span th:text="${imageError}">Error</span>
+                        </div>
+
+                        <div th:if="${errorMessage}" class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            <span th:text="${errorMessage}">Error</span>
+                        </div>
+
+                        <!-- Success Messages -->
+                        <div th:if="${successMessage}" class="alert alert-success">
+                            <i class="bi bi-check-circle me-2"></i>
+                            <span th:text="${successMessage}">Success</span>
+                        </div>
+
+                        <!-- Product Form -->
+                        <form th:action="${product.id == null ? '/admin/products' : '/admin/products/' + product.id}" 
+                              th:object="${product}" 
+                              method="post" 
+                              enctype="multipart/form-data" 
+                              id="productForm">
+                            
+                            <div class="row">
+                                <!-- Left Column: Product Info -->
+                                <div class="col-md-8">
+                                    <!-- Basic Information -->
+                                    <div class="mb-4">
+                                        <h6 class="fw-bold text-primary mb-3">
+                                            <i class="bi bi-info-circle me-2"></i>
+                                            Informasi Dasar
+                                        </h6>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="sku" class="form-label">SKU <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" id="sku" th:field="*{sku}" 
+                                                       placeholder="Contoh: SKU-001" required>
+                                                <div th:if="${#fields.hasErrors('sku')}" class="text-danger mt-1">
+                                                    <small th:errors="*{sku}">Error</small>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-6 mb-3">
+                                                <label for="category" class="form-label">Kategori</label>
+                                                <select class="form-select" id="category" th:field="*{category}">
+                                                    <option value="">Pilih Kategori</option>
+                                                    <option value="Perkakas">Perkakas</option>
+                                                    <option value="Elektronik">Elektronik</option>
+                                                    <option value="Peralatan Rumah">Peralatan Rumah</option>
+                                                    <option value="Otomotif">Otomotif</option>
+                                                    <option value="Garden">Garden</option>
+                                                    <option value="Lainnya">Lainnya</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label">Nama Produk <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" id="name" th:field="*{name}" 
+                                                   placeholder="Masukkan nama produk" required>
+                                            <div th:if="${#fields.hasErrors('name')}" class="text-danger mt-1">
+                                                <small th:errors="*{name}">Error</small>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label for="description" class="form-label">Deskripsi</label>
+                                            <textarea class="form-control" id="description" th:field="*{description}" 
+                                                      rows="4" placeholder="Deskripsi detail produk"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pricing & Stock -->
+                                    <div class="mb-4">
+                                        <h6 class="fw-bold text-primary mb-3">
+                                            <i class="bi bi-currency-dollar me-2"></i>
+                                            Harga & Stok
+                                        </h6>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="price" class="form-label">Harga <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rp</span>
+                                                    <input type="number" class="form-control" id="price" th:field="*{price}" 
+                                                           placeholder="0" min="0" step="0.01" required>
+                                                </div>
+                                                <div th:if="${#fields.hasErrors('price')}" class="text-danger mt-1">
+                                                    <small th:errors="*{price}">Error</small>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-6 mb-3">
+                                                <label for="stock" class="form-label">Stok <span class="text-danger">*</span></label>
+                                                <input type="number" class="form-control" id="stock" th:field="*{stock}" 
+                                                       placeholder="0" min="0" required>
+                                                <div th:if="${#fields.hasErrors('stock')}" class="text-danger mt-1">
+                                                    <small th:errors="*{stock}">Error</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column: Image Upload -->
+                                <div class="col-md-4">
+                                    <!-- Image Upload -->
+                                    <div class="mb-4">
+                                        <h6 class="fw-bold text-primary mb-3">
+                                            <i class="bi bi-image me-2"></i>
+                                            Gambar Produk
+                                        </h6>
+                                        
+                                        <!-- Current Image Preview -->
+                                        <div th:if="${product.imageUrl}" class="mb-3 text-center">
+                                            <img th:src="${product.imageUrl}" alt="Current Product Image" 
+                                                 class="img-fluid rounded" style="max-height: 200px; width: 100%; object-fit: cover;">
+                                            <small class="text-muted d-block mt-2">Gambar saat ini</small>
+                                        </div>
+                                        
+                                        <!-- Upload Area -->
+                                        <div class="mb-3">
+                                            <label for="imageFile" class="form-label">Upload Gambar Baru</label>
+                                            <input type="file" 
+                                                   class="form-control" 
+                                                   id="imageFile" 
+                                                   name="imageFile" 
+                                                   accept="image/jpeg,image/png,image/gif"
+                                                   onchange="previewImage(this)">
+                                            <div class="form-text">Format: JPG, PNG, GIF. Maksimal: 10MB</div>
+                                        </div>
+                                        
+                                        <!-- Image Preview -->
+                                        <div id="imagePreview" class="text-center" style="display: none;">
+                                            <img id="previewImg" class="img-fluid rounded" style="max-height: 200px; width: 100%; object-fit: cover;">
+                                            <small class="text-success d-block mt-2">Preview gambar baru</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Form Actions -->
+                            <div class="d-flex justify-content-between align-items-center pt-4 border-top">
+                                <div>
+                                    <a href="/admin/products" class="btn btn-outline-secondary">
+                                        <i class="bi bi-arrow-left me-2"></i>
+                                        Kembali
+                                    </a>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="reset" class="btn btn-outline-secondary" onclick="resetForm()">
+                                        <i class="bi bi-arrow-clockwise me-2"></i>
+                                        Reset
+                                    </button>
+                                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                                        <i class="bi bi-check-lg me-2"></i>
+                                        <span th:text="${product.id == null ? 'Simpan Produk' : 'Update Produk'}">Simpan</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    
+    <!-- Scripts -->
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+
+    <script>
+        // Image preview function
+        function previewImage(input) {
+            const file = input.files[0];
+            const preview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImg');
+            
+            if (file) {
+                // Validate file type
+                const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('File harus berupa gambar (JPG, PNG, GIF)');
+                    input.value = '';
+                    preview.style.display = 'none';
+                    return;
+                }
+                
+                // Validate file size (10MB)
+                if (file.size > 10 * 1024 * 1024) {
+                    alert('Ukuran file tidak boleh lebih dari 10MB');
+                    input.value = '';
+                    preview.style.display = 'none';
+                    return;
+                }
+                
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                    preview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+                
+                console.log('File selected:', file.name, 'Size:', file.size, 'Type:', file.type);
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+        
+        // Reset form function
+        function resetForm() {
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('imageFile').value = '';
+        }
+        
+        // Form submission handling
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            const imageFile = document.getElementById('imageFile');
+            
+            console.log('=== FORM SUBMISSION ===');
+            console.log('Form action:', this.action);
+            console.log('Form method:', this.method);
+            console.log('Form enctype:', this.enctype);
+            
+            if (imageFile.files.length > 0) {
+                const file = imageFile.files[0];
+                console.log('Image file:', {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type
+                });
+            } else {
+                console.log('No image file selected');
+            }
+            
+            // Show loading state
+            submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Menyimpan...';
+            submitBtn.disabled = true;
+            
+            // Re-enable after timeout (failsafe)
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 10000);
+        });
+    </script>
+</body>
+</html>

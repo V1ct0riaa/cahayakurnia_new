@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<footer th:fragment="footer" class="footer" style="background: var(--gray-900); color: var(--white); padding: 4rem 0 2rem;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="d-flex align-items-center mb-3">
+                    <i class="bi bi-lightning-charge-fill me-2" style="color: var(--primary-color); font-size: 1.5rem;"></i>
+                    <h5 class="mb-0">Cahaya Kurnia</h5>
+                </div>
+                <p style="color: var(--gray-400); line-height: 1.6;">
+                    Toko perkakas dan elektronik terpercaya dengan kualitas terbaik dan harga terjangkau. 
+                    Melayani kebutuhan Anda dengan pelayanan terbaik.
+                </p>
+                <div class="d-flex gap-2 mt-3">
+                    <a href="/about" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-info-circle me-1"></i>Tentang Kami
+                    </a>
+                    <a href="/contact" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-envelope me-1"></i>Kontak
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-lg-2 col-md-6 mb-4">
+                <h6 class="mb-3" style="color: var(--white); font-weight: 600;">Layanan</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a href="/products" style="color: var(--gray-400); text-decoration: none; transition: var(--transition);">
+                            <i class="bi bi-chevron-right me-1"></i>Produk
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="/products" style="color: var(--gray-400); text-decoration: none; transition: var(--transition);">
+                            <i class="bi bi-chevron-right me-1"></i>Katalog
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="/products" style="color: var(--gray-400); text-decoration: none; transition: var(--transition);">
+                            <i class="bi bi-chevron-right me-1"></i>Pencarian
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="/admin" style="color: var(--gray-400); text-decoration: none; transition: var(--transition);">
+                            <i class="bi bi-chevron-right me-1"></i>Admin Panel
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h6 class="mb-3" style="color: var(--white); font-weight: 600;">Kategori</h6>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a href="/products?category=perkakas" style="color: var(--gray-400); text-decoration: none; transition: var(--transition);">
+                            <i class="bi bi-tools me-1"></i>Perkakas
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="/products?category=elektronik" style="color: var(--gray-400); text-decoration: none; transition: var(--transition);">
+                            <i class="bi bi-lightning me-1"></i>Elektronik
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="/products?category=rumah-tangga" style="color: var(--gray-400); text-decoration: none; transition: var(--transition);">
+                            <i class="bi bi-house me-1"></i>Rumah Tangga
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="/products?category=garden" style="color: var(--gray-400); text-decoration: none; transition: var(--transition);">
+                            <i class="bi bi-flower1 me-1"></i>Garden
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <h6 class="mb-3" style="color: var(--white); font-weight: 600;">Kontak</h6>
+                <div style="color: var(--gray-400);">
+                    <div class="d-flex align-items-start mb-3">
+                        <i class="bi bi-geo-alt me-2 mt-1" style="color: var(--primary-color);"></i>
+                        <div>
+                            Jl. Siliwangi No.208, Purwawinangun, Kec. Kuningan, Kabupaten Kuningan, Jawa Barat 45512
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-telephone me-2" style="color: var(--primary-color);"></i>
+                        <span>(0232) 874098</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-envelope me-2" style="color: var(--primary-color);"></i>
+                        <span>info@cahayakurnia.com</span>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="bi bi-clock me-2" style="color: var(--primary-color);"></i>
+                        <span>Senin - Sabtu: 08:00 - 17:00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <hr style="border-color: var(--gray-700); margin: 3rem 0 2rem;">
+        
+        <div class="d-flex justify-content-between align-items-center">
+            <div style="color: var(--gray-400);">
+                <p class="mb-0">&copy; 2024 Cahaya Kurnia. All rights reserved.</p>
+            </div>
+            <div class="d-flex gap-3">
+                <a href="#" style="color: var(--gray-400); text-decoration: none; transition: var(--transition);">
+                    <i class="bi bi-facebook" style="font-size: 1.2rem;"></i>
+                </a>
+                <a href="#" style="color: var(--gray-400); text-decoration: none; transition: var(--transition);">
+                    <i class="bi bi-instagram" style="font-size: 1.2rem;"></i>
+                </a>
+                <a href="#" style="color: var(--gray-400); text-decoration: none; transition: var(--transition);">
+                    <i class="bi bi-whatsapp" style="font-size: 1.2rem;"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+</html>
