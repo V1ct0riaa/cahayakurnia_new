@@ -31,7 +31,6 @@ dependencies {
 // postgresql
 	implementation("org.postgresql:postgresql:42.7.3")
 
-
 	implementation("org.postgresql:postgresql")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
@@ -50,6 +49,9 @@ dependencies {
 	// File upload handling
 	implementation("commons-fileupload:commons-fileupload:1.5")
 	implementation("commons-io:commons-io:2.11.0")
+	
+	// .env file support
+	implementation("me.paulschwarz:spring-dotenv:4.0.0")
 }
 
 
