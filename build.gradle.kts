@@ -50,7 +50,7 @@ dependencies {
 	implementation("commons-fileupload:commons-fileupload:1.5")
 	implementation("commons-io:commons-io:2.11.0")
 	
-	// .env file support
+	// env file support
 	implementation("me.paulschwarz:spring-dotenv:4.0.0")
 }
 

@@ -38,7 +38,7 @@ out/
 
 ### Environment Files ###
 .env.example
-env
+.env
 
 ### Sensitive Configuration ###
 src/main/resources/application-dev.properties
