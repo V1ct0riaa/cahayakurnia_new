@@ -1,0 +1,6 @@
+DB_URL="jdbc:postgresql://aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres?prepareThreshold=0"
+DB_USERNAME="postgres.gggoozhfxqomaexifxkk"
+DB_PASSWORD="@Nasipadang123"
+SUPABASE_URL="https://gggoozhfxqomaexifxkk.supabase.co"
+SUPABASE_BUCKET_NAME="product-images"
+SUPABASE_API_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdnZ29vemhmeHFvbWFleGlmeGtrIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1NDcwODQ0MiwiZXhwIjoyMDcwMjg0NDQyfQ.7mOu7cXU5nedv7dSYyl2r8CIdD-y-I97oX_GQwj_3go"

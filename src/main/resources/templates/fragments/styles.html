@@ -16,6 +16,7 @@
         --info-color: #3b82f6;
         --light-color: #f8fafc;
         --dark-color: #1e293b;
+        --gray-50: #f8fafc;
         --gray-100: #f1f5f9;
         --gray-200: #e2e8f0;
         --gray-300: #cbd5e1;
@@ -33,6 +34,8 @@
         --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
         --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        --border-radius-lg: 1rem;
     }
 
     /* 2. Base Styles */
@@ -191,6 +194,18 @@
         top: 0;
         z-index: 1000;
         transition: all 0.3s ease;
+    }
+    
+    .navbar .container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .navbar-collapse {
+        flex: 1;
+        display: flex;
+        justify-content: center;
     }
 
     .navbar-brand {
@@ -766,6 +781,48 @@
     .fab:hover {
         transform: scale(1.1);
         box-shadow: var(--shadow-xl);
+    }
+    
+    /* 18.1. Floating WhatsApp Button */
+    .whatsapp-float {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 50%;
+        background: #25d366;
+        color: var(--white);
+        border: none;
+        box-shadow: var(--shadow-lg);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        text-decoration: none;
+        animation: pulse 2s infinite;
+    }
+
+    .whatsapp-float:hover {
+        transform: scale(1.1);
+        box-shadow: var(--shadow-xl);
+        color: var(--white);
+        text-decoration: none;
+    }
+
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+        }
     }
 
     /* 19. Search Bar */
