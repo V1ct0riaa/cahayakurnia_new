@@ -1,5 +1,9 @@
 package cahayakurnia.cahayakurnia.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import cahayakurnia.cahayakurnia.model.Product;
@@ -90,5 +94,38 @@ public class ProductServiceImpl implements ProductService {
         // For now, return recent products as best-selling products
         // This can be enhanced later with actual best-selling product logic based on sales data
         return getRecentProducts(limit);
+    }
+    
+    // =========================
+    // PAGINATION METHODS IMPLEMENTATION
+    // =========================
+    
+    @Override
+    public Page<Product> getProductsWithPagination(int page, int size, String sortBy, String direction) {
+        Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return productRepository.findAll(pageable);
+    }
+    
+    @Override
+    public Page<Product> searchProductsWithPagination(String searchTerm, int page, int size, String sortBy, String direction) {
+        Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(
+            searchTerm, searchTerm, pageable);
+    }
+    
+    @Override
+    public Page<Product> getProductsByCategoryWithPagination(String category, int page, int size, String sortBy, String direction) {
+        Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return productRepository.findByCategory(category, pageable);
+    }
+    
+    @Override
+    public Page<Product> getProductsWithLowStockWithPagination(int threshold, int page, int size, String sortBy, String direction) {
+        Sort sort = Sort.by(Sort.Direction.fromString(direction), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return productRepository.findByStockLessThanEqual(threshold, pageable);
     }
 }

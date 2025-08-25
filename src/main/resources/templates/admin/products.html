@@ -51,7 +51,10 @@
                         <i class="bi bi-list-ul me-2"></i>
                         Daftar Produk
                     </h5>
-                    <small class="text-muted" th:text="'Total: ' + ${#lists.size(products)} + ' produk'">Total: 0 produk</small>
+                    <small class="text-muted">
+                        Menampilkan <span th:text="${startItem}">1</span> - <span th:text="${endItem}">15</span> 
+                        dari <span th:text="${totalItems}">0</span> produk
+                    </small>
                 </div>
                 <div class="d-flex gap-2">
                     <a href="/admin" class="btn btn-outline-primary">
@@ -64,6 +67,72 @@
                     </a>
                 </div>
             </div>
+        </div>
+
+        <!-- Search and Filter Bar -->
+        <div class="admin-card mb-4">
+            <form th:action="@{/admin/products}" method="get" class="row g-3">
+                <!-- Search Input -->
+                <div class="col-md-4">
+                    <label for="search" class="form-label">Cari Produk</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" id="search" name="search" 
+                               th:value="${search}" placeholder="Cari nama atau deskripsi produk...">
+                    </div>
+                </div>
+                
+                <!-- Category Filter -->
+                <div class="col-md-3">
+                    <label for="category" class="form-label">Kategori</label>
+                    <select class="form-select" id="category" name="category">
+                        <option value="">Semua Kategori</option>
+                        <option value="Elektronik" th:selected="${category == 'Elektronik'}">Elektronik</option>
+                        <option value="Fashion" th:selected="${category == 'Fashion'}">Fashion</option>
+                        <option value="Makanan" th:selected="${category == 'Makanan'}">Makanan</option>
+                        <option value="Minuman" th:selected="${category == 'Minuman'}">Minuman</option>
+                        <option value="Lainnya" th:selected="${category == 'Lainnya'}">Lainnya</option>
+                    </select>
+                </div>
+                
+                <!-- Sort Options -->
+                <div class="col-md-3">
+                    <label for="sortBy" class="form-label">Urutkan</label>
+                    <select class="form-select" id="sortBy" name="sortBy" onchange="updateSortDirection()">
+                        <option value="id" th:selected="${sortBy == 'id'}">Terbaru</option>
+                        <option value="name" th:selected="${sortBy == 'name'}">Nama</option>
+                        <option value="price" th:selected="${sortBy == 'price'}">Harga</option>
+                        <option value="stock" th:selected="${sortBy == 'stock'}">Stok</option>
+                    </select>
+                </div>
+                
+                <!-- Sort Direction -->
+                <div class="col-md-2">
+                    <label for="direction" class="form-label">Arah</label>
+                    <select class="form-select" id="direction" name="direction">
+                        <option value="desc" th:selected="${direction == 'desc'}">↓ Menurun</option>
+                        <option value="asc" th:selected="${direction == 'asc'}">↑ Menaik</option>
+                    </select>
+                </div>
+                
+                <!-- Hidden fields to preserve pagination -->
+                <input type="hidden" name="page" value="0">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                
+                <!-- Search Button -->
+                <div class="col-12">
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-search me-2"></i>
+                            Cari
+                        </button>
+                        <a th:href="@{/admin/products}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-clockwise me-2"></i>
+                            Reset
+                        </a>
+                    </div>
+                </div>
+            </form>
         </div>
 
         <!-- Products Table -->
@@ -105,6 +174,59 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div th:if="${totalPages > 1}" class="d-flex justify-content-between align-items-center mt-4">
+                <!-- Page Info -->
+                <div class="text-muted">
+                    Halaman <span th:text="${currentPage + 1}">1</span> dari <span th:text="${totalPages}">1</span>
+                </div>
+                
+                <!-- Pagination Navigation -->
+                <nav aria-label="Product pagination">
+                    <ul class="pagination mb-0">
+                        <!-- Previous Button -->
+                        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                            <a class="page-link" th:href="@{/admin/products(page=${currentPage - 1}, size=${pageSize}, sortBy=${sortBy}, direction=${direction}, search=${search}, category=${category})}" 
+                               th:if="${currentPage > 0}">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                            <span class="page-link" th:if="${currentPage == 0}">
+                                <i class="bi bi-chevron-left"></i>
+                            </span>
+                        </li>
+                        
+                        <!-- Page Numbers -->
+                        <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" 
+                            th:classappend="${pageNum == currentPage} ? 'active'">
+                            <a class="page-link" th:href="@{/admin/products(page=${pageNum}, size=${pageSize}, sortBy=${sortBy}, direction=${direction}, search=${search}, category=${category})}" 
+                               th:text="${pageNum + 1}">1</a>
+                        </li>
+                        
+                        <!-- Next Button -->
+                        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+                            <a class="page-link" th:href="@{/admin/products(page=${currentPage + 1}, size=${pageSize}, sortBy=${sortBy}, direction=${direction}, search=${search}, category=${category})}" 
+                               th:if="${currentPage < totalPages - 1}">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                            <span class="page-link" th:if="${currentPage == totalPages - 1}">
+                                <i class="bi bi-chevron-right"></i>
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+                
+                <!-- Page Size Selector -->
+                <div class="d-flex align-items-center gap-2">
+                    <label for="pageSize" class="form-label mb-0">Per halaman:</label>
+                    <select class="form-select form-select-sm" id="pageSize" style="width: auto;" onchange="changePageSize()">
+                        <option value="10" th:selected="${pageSize == 10}">10</option>
+                        <option value="15" th:selected="${pageSize == 15}">15</option>
+                        <option value="25" th:selected="${pageSize == 25}">25</option>
+                        <option value="50" th:selected="${pageSize == 50}">50</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
@@ -150,6 +272,26 @@
             
             var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
             deleteModal.show();
+        }
+        
+        function updateSortDirection() {
+            const sortBy = document.getElementById('sortBy').value;
+            const direction = document.getElementById('direction');
+            
+            // Set default direction based on sort field
+            if (sortBy === 'price' || sortBy === 'stock') {
+                direction.value = 'asc'; // Default to ascending for numeric fields
+            } else {
+                direction.value = 'desc'; // Default to descending for text fields
+            }
+        }
+        
+        function changePageSize() {
+            const pageSize = document.getElementById('pageSize').value;
+            const currentUrl = new URL(window.location);
+            currentUrl.searchParams.set('page', '0'); // Reset to first page
+            currentUrl.searchParams.set('size', pageSize);
+            window.location.href = currentUrl.toString();
         }
     </script>
 </body>

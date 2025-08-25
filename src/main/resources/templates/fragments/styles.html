@@ -757,31 +757,7 @@
         }
     }
 
-    /* 18. Floating Action Button */
-    .fab {
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        width: 3.5rem;
-        height: 3.5rem;
-        border-radius: 50%;
-        background: var(--gradient-primary);
-        color: var(--white);
-        border: none;
-        box-shadow: var(--shadow-lg);
-        cursor: pointer;
-        transition: all 0.3s ease;
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.25rem;
-    }
 
-    .fab:hover {
-        transform: scale(1.1);
-        box-shadow: var(--shadow-xl);
-    }
     
     /* 18.1. Floating WhatsApp Button */
     .whatsapp-float {
@@ -1039,7 +1015,6 @@
     /* 27. Print Styles */
     @media print {
         .navbar,
-        .fab,
         .btn {
             display: none !important;
         }

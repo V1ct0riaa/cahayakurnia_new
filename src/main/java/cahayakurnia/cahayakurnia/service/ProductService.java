@@ -1,6 +1,7 @@
 package cahayakurnia.cahayakurnia.service;
 
 import cahayakurnia.cahayakurnia.model.Product;
+import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface ProductService {
@@ -31,4 +32,20 @@ public interface ProductService {
     List<Product> getFeaturedProducts(int limit);
     
     List<Product> getBestSellingProducts(int limit);
+    
+    // =========================
+    // PAGINATION METHODS
+    // =========================
+    
+    // Basic pagination with sorting
+    Page<Product> getProductsWithPagination(int page, int size, String sortBy, String direction);
+    
+    // Search with pagination
+    Page<Product> searchProductsWithPagination(String searchTerm, int page, int size, String sortBy, String direction);
+    
+    // Category filter with pagination
+    Page<Product> getProductsByCategoryWithPagination(String category, int page, int size, String sortBy, String direction);
+    
+    // Low stock products with pagination
+    Page<Product> getProductsWithLowStockWithPagination(int threshold, int page, int size, String sortBy, String direction);
 }

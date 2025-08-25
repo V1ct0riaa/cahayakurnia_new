@@ -4,6 +4,7 @@ import cahayakurnia.cahayakurnia.model.Product;
 import cahayakurnia.cahayakurnia.service.FileUploadService;
 import cahayakurnia.cahayakurnia.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -76,35 +77,48 @@ public class ProductController {
     // =========================
     
     @GetMapping("/admin/products")
-    public String adminListProducts(Model model) {
-        List<Product> products = productService.getAllProducts();
+    public String adminListProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "15") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "desc") String direction,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String category,
+            Model model) {
         
-        // Debug logging
-        System.out.println("=== ADMIN PRODUCTS DEBUG ===");
-        System.out.println("Total products from service: " + products.size());
+        Page<Product> productPage;
         
-        // Check each product for potential issues
-        for (int i = 0; i < products.size(); i++) {
-            Product p = products.get(i);
-            System.out.println("Product " + (i+1) + ":");
-            System.out.println("  ID: " + p.getId());
-            System.out.println("  Name: " + p.getName());
-            System.out.println("  SKU: " + p.getSku());
-            System.out.println("  Price: " + p.getPrice());
-            System.out.println("  Stock: " + p.getStock());
-            System.out.println("  Category: " + p.getCategory());
-            System.out.println("  Description: " + (p.getDescription() != null ? p.getDescription().substring(0, Math.min(20, p.getDescription().length())) + "..." : "null"));
-            System.out.println("  ImageUrl: " + (p.getImageUrl() != null ? "Yes" : "No"));
-            
-            // Check for null values that might cause issues
-            if (p.getName() == null) System.out.println("  WARNING: Name is null!");
-            if (p.getSku() == null) System.out.println("  WARNING: SKU is null!");
-            if (p.getPrice() == null) System.out.println("  WARNING: Price is null!");
-            if (p.getStock() == null) System.out.println("  WARNING: Stock is null!");
+        // Handle search functionality
+        if (search != null && !search.trim().isEmpty()) {
+            productPage = productService.searchProductsWithPagination(search.trim(), page, size, sortBy, direction);
+        } else if (category != null && !category.trim().isEmpty()) {
+            productPage = productService.getProductsByCategoryWithPagination(category.trim(), page, size, sortBy, direction);
+        } else {
+            productPage = productService.getProductsWithPagination(page, size, sortBy, direction);
         }
-        System.out.println("=============================");
         
-        model.addAttribute("products", products);
+        // Add pagination info to model
+        model.addAttribute("products", productPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", productPage.getTotalPages());
+        model.addAttribute("totalItems", productPage.getTotalElements());
+        model.addAttribute("pageSize", size);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("direction", direction);
+        model.addAttribute("search", search);
+        model.addAttribute("category", category);
+        
+        // Calculate pagination info
+        int startItem = page * size + 1;
+        int endItem = Math.min(startItem + size - 1, (int) productPage.getTotalElements());
+        model.addAttribute("startItem", startItem);
+        model.addAttribute("endItem", endItem);
+        
+        // Add flash messages if any
+        model.addAttribute("successMessage", model.getAttribute("successMessage"));
+        model.addAttribute("errorMessage", model.getAttribute("errorMessage"));
+        model.addAttribute("warningMessage", model.getAttribute("warningMessage"));
+        
         return "admin/products";
     }
 
@@ -315,7 +329,6 @@ public class ProductController {
                     // Continue with product deletion
                 }
             }
-            
             // Delete product
             productService.deleteProduct(id);
             redirectAttributes.addFlashAttribute("successMessage", "Produk berhasil dihapus!");
