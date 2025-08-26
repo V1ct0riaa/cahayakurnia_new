@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+    <title>Test Upload - Admin Panel</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-upload me-2"></i>
+                            Test Upload
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        
+                        <!-- Message -->
+                        <div th:if="${message}" class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <span th:text="${message}"></span>
+                        </div>
+
+                        <!-- Test Form -->
+                        <form action="/test-upload" method="post" enctype="multipart/form-data">
+                            <div class="mb-3">
+                                <label for="file" class="form-label">Test File Upload</label>
+                                <input type="file" class="form-control" id="file" name="file" accept=".xlsx,.xls,.csv,image/*">
+                            </div>
+                            
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-upload me-2"></i>
+                                    Test Upload
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="mt-3">
+                            <a href="/admin/bulk-import" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Kembali ke Bulk Import
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+</body>
+</html>

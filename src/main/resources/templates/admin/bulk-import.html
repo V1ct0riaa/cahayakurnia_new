@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+    <title>Bulk Import Produk - Admin Panel</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav th:replace="~{fragments/navbar :: navbar}"></nav>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-upload me-2"></i>
+                            Bulk Import Produk
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        
+                        <!-- Step 1: Download Format Guide -->
+                        <div class="mb-4">
+                            <h5 class="text-primary">
+                                <i class="fas fa-download me-2"></i>
+                                Langkah 1: Download Panduan Format
+                            </h5>
+                            <p class="text-muted">
+                                Download panduan format untuk membuat file Excel/CSV dengan format yang benar. Buat file Excel secara manual mengikuti panduan ini.
+                            </p>
+                            <a href="/admin/download-format-guide" class="btn btn-success">
+                                <i class="fas fa-download me-2"></i>
+                                Download Panduan Format
+                            </a>
+                        </div>
+
+                        <hr>
+
+                        <!-- Step 2: Upload Files -->
+                        <div class="mb-4">
+                            <h5 class="text-primary">
+                                <i class="fas fa-upload me-2"></i>
+                                Langkah 2: Upload File Excel (.xlsx) dan Gambar
+                            </h5>
+                            <p class="text-muted">
+                                Upload file Excel (.xlsx) yang sudah diisi dan folder gambar produk. Nama file gambar harus sesuai dengan SKU di Excel.
+                            </p>
+
+                            <!-- Error Messages -->
+                            <div th:if="${errors}" class="alert alert-danger">
+                                <h6><i class="fas fa-exclamation-triangle me-2"></i>Error Validasi:</h6>
+                                <ul class="mb-0">
+                                    <li th:each="error : ${errors}" th:text="${error}"></li>
+                                </ul>
+                            </div>
+
+                            <form th:action="@{/admin/upload-excel-preview}" method="post" enctype="multipart/form-data" id="uploadForm">
+                                
+                                                                <!-- Excel File Upload -->
+                                <div class="mb-3">
+                                                                         <label for="excelFile" class="form-label">File Excel (.xlsx) Produk</label>
+                                    <div class="drop-zone" id="excelDropZone">
+                                        <div class="drop-zone-content">
+                                                                                         <i class="fas fa-file-excel fa-3x text-muted mb-3"></i>
+                                             <p class="mb-2">Drag & drop file Excel (.xlsx) di sini</p>
+                                             <p class="text-muted small">atau</p>
+                                             <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('excelFile').click()">
+                                                 Pilih File Excel (.xlsx)
+                                             </button>
+                                        </div>
+                                                                                  <input type="file" id="excelFile" name="excelFile" accept=".xlsx" style="display: none;" required>
+                                    </div>
+                                    <div id="excelFileInfo" class="mt-2" style="display: none;">
+                                        <div class="alert alert-info">
+                                            <i class="fas fa-check-circle me-2"></i>
+                                            <span id="excelFileName"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Image Files Upload -->
+                                <div class="mb-3">
+                                    <label for="imageFiles" class="form-label">File Gambar Produk</label>
+                                    <div class="drop-zone" id="imageDropZone">
+                                        <div class="drop-zone-content">
+                                            <i class="fas fa-images fa-3x text-muted mb-3"></i>
+                                            <p class="mb-2">Drag & drop folder gambar di sini</p>
+                                            <p class="text-muted small">atau</p>
+                                            <button type="button" class="btn btn-outline-primary" onclick="document.getElementById('imageFiles').click()">
+                                                Pilih File Gambar
+                                            </button>
+                                        </div>
+                                        <input type="file" id="imageFiles" name="imageFiles" accept="image/*" multiple style="display: none;">
+                                    </div>
+                                    <div id="imageFilesInfo" class="mt-2" style="display: none;">
+                                        <div class="alert alert-info">
+                                            <i class="fas fa-check-circle me-2"></i>
+                                            <span id="imageFilesCount"></span> file gambar dipilih
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Submit Button -->
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-eye me-2"></i>
+                                        Preview Data
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+
+                        <!-- Instructions -->
+                        <div class="mt-4">
+                            <h6 class="text-primary">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Petunjuk Penggunaan:
+                            </h6>
+                                                         <ol class="text-muted">
+                                 <li>Download panduan format terlebih dahulu</li>
+                                 <li>Buat file Excel (.xlsx) secara manual mengikuti panduan</li>
+                                 <li>Siapkan file gambar dengan nama sesuai SKU (contoh: LAP001.jpg)</li>
+                                 <li>Upload file Excel (.xlsx) dan gambar sekaligus</li>
+                                 <li>Preview data sebelum import</li>
+                                 <li>Konfirmasi import jika data sudah benar</li>
+                             </ol>
+                        </div>
+                        
+                        <!-- Debug Tools -->
+                        <div class="mt-4">
+                            <h6 class="text-warning">
+                                <i class="fas fa-tools me-2"></i>
+                                Debug Tools:
+                            </h6>
+                            <a href="/test-upload" class="btn btn-outline-warning btn-sm">
+                                <i class="fas fa-bug me-2"></i>
+                                Test Upload
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <div th:replace="~{fragments/scripts :: scripts}"></div>
+
+    <script>
+        // Excel File Drop Zone
+        const excelDropZone = document.getElementById('excelDropZone');
+        const excelFile = document.getElementById('excelFile');
+        const excelFileInfo = document.getElementById('excelFileInfo');
+        const excelFileName = document.getElementById('excelFileName');
+
+        excelDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            excelDropZone.classList.add('drop-zone-active');
+        });
+
+        excelDropZone.addEventListener('dragleave', () => {
+            excelDropZone.classList.remove('drop-zone-active');
+        });
+
+        excelDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            excelDropZone.classList.remove('drop-zone-active');
+            
+            const files = e.dataTransfer.files;
+                         if (files.length > 0 && files[0].name.endsWith('.xlsx')) {
+                excelFile.files = files;
+                showExcelFileInfo(files[0]);
+            }
+        });
+
+        excelFile.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                showExcelFileInfo(e.target.files[0]);
+            }
+        });
+
+        function showExcelFileInfo(file) {
+            excelFileName.textContent = file.name;
+            excelFileInfo.style.display = 'block';
+        }
+
+        // Image Files Drop Zone
+        const imageDropZone = document.getElementById('imageDropZone');
+        const imageFiles = document.getElementById('imageFiles');
+        const imageFilesInfo = document.getElementById('imageFilesInfo');
+        const imageFilesCount = document.getElementById('imageFilesCount');
+
+        imageDropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            imageDropZone.classList.add('drop-zone-active');
+        });
+
+        imageDropZone.addEventListener('dragleave', () => {
+            imageDropZone.classList.remove('drop-zone-active');
+        });
+
+        imageDropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            imageDropZone.classList.remove('drop-zone-active');
+            
+            const files = Array.from(e.dataTransfer.files).filter(file => 
+                file.type.startsWith('image/')
+            );
+            
+            if (files.length > 0) {
+                // Create a new FileList-like object
+                const dt = new DataTransfer();
+                files.forEach(file => dt.items.add(file));
+                imageFiles.files = dt.files;
+                showImageFilesInfo(files);
+            }
+        });
+
+        imageFiles.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                showImageFilesInfo(Array.from(e.target.files));
+            }
+        });
+
+        function showImageFilesInfo(files) {
+            imageFilesCount.textContent = files.length;
+            imageFilesInfo.style.display = 'block';
+        }
+
+        // Form validation
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            const excelFile = document.getElementById('excelFile').files[0];
+            const imageFiles = document.getElementById('imageFiles').files;
+            
+                                     if (!excelFile) {
+                e.preventDefault();
+                alert('Pilih file Excel (.xlsx) terlebih dahulu!');
+                return;
+            }
+            
+            if (imageFiles.length === 0) {
+                e.preventDefault();
+                alert('Pilih minimal satu file gambar!');
+                return;
+            }
+        });
+    </script>
+
+    <style>
+        .drop-zone {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            background-color: #f8f9fa;
+        }
+
+        .drop-zone:hover {
+            border-color: #0d6efd;
+            background-color: #f0f8ff;
+        }
+
+        .drop-zone-active {
+            border-color: #0d6efd;
+            background-color: #e7f3ff;
+        }
+
+        .drop-zone-content {
+            pointer-events: none;
+        }
+
+        .drop-zone-content button {
+            pointer-events: all;
+        }
+    </style>
+</body>
+</html>

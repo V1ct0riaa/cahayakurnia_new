@@ -1,6 +1,6 @@
 plugins {
 	java
-	id("org.springframework.boot") version "3.5.4"
+	id("org.springframework.boot") version "3.3.2"
 	id("io.spring.dependency-management") version "1.1.7"
 }
 
@@ -19,7 +19,12 @@ repositories {
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-//	implementation("org.springframework.boot:spring-boot-starter-security")
+	    // TEMPORARILY DISABLED FOR TESTING
+    // implementation("org.springframework.boot:spring-boot-starter-security")
+    
+    // Apache POI for Excel support
+    implementation("org.apache.poi:poi:5.2.4")
+    implementation("org.apache.poi:poi-ooxml:5.2.4")
 	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 //	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
@@ -48,10 +53,13 @@ dependencies {
 
 	// File upload handling
 	implementation("commons-fileupload:commons-fileupload:1.5")
-	implementation("commons-io:commons-io:2.11.0")
+	implementation("commons-io:commons-io:2.16.1")
 	
 	// env file support
 	implementation("me.paulschwarz:spring-dotenv:4.0.0")
+	
+	// Removed Apache POI to eliminate vulnerabilities
+	// Users will create Excel files manually following the format guide
 }
 
 

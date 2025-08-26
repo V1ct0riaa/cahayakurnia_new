@@ -30,7 +30,9 @@ public class Appconfig {
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.connectTimeout(Duration.ofSeconds(20)).readTimeout(Duration.ofSeconds(60))
+        return builder
+                .setConnectTimeout(Duration.ofSeconds(20))
+                .setReadTimeout(Duration.ofSeconds(60))
                 .build();
     }
 

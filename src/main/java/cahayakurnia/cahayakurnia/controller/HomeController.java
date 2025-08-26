@@ -85,4 +85,12 @@ public class HomeController {
         model.addAttribute("companyName", "Cahaya Kurnia");
         return "contact";
     }
+    
+    // =========================
+    // Test endpoint "/test"
+    // =========================
+    @GetMapping("/test")
+    public String test() {
+        return "Test endpoint working!";
+    }
 }
