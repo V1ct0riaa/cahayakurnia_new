@@ -4,12 +4,14 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import java.math.BigDecimal;
-import java.time.Duration;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.stereotype.Component;
 
 import cahayakurnia.cahayakurnia.service.ProductService;
 import cahayakurnia.cahayakurnia.model.Product;
-import org.springframework.web.client.RestTemplate;
+
+import java.math.BigDecimal;
+import java.time.Duration;
 
 @Configuration
 public class Appconfig {
