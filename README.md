@@ -1,92 +1,12 @@
-# Cahaya Kurnia - Spring Boot Application
+Cahaya Kurnia - Aplikasi E-commerce Toko Teknik
+Proyek ini adalah aplikasi e-commerce sederhana yang dibangun menggunakan Spring Boot. Tujuan utama dari proyek ini adalah sebagai proyek waktu luang dan media pembelajaran pribadi untuk memperdalam pemahaman saya tentang ekosistem Spring Boot.
 
-## 🔐 Setup Environment Variables (WAJIB)
+Aplikasi ini dibuat sebagai situs web untuk Toko Alat Teknik Cahaya Kurnia, namun perlu dicatat bahwa proyek ini masih dalam tahap pengembangan (on development). Sebagian besar fitur dasar seperti katalog produk dan manajemen data sudah ada, tetapi masih banyak fitur lain yang akan ditambahkan dan disempurnakan.
 
-Aplikasi ini menggunakan environment variables untuk keamanan. **Tidak ada lagi data sensitif di file properties!**
+Semua data sensitif, seperti kredensial database dan API key, disimpan di environment variables. Hal ini memastikan tidak ada informasi rahasia yang secara tidak sengaja ter-commit ke repositori.
 
-### 1. Buat file `.env` di root project
+application.properties dan application-dev.properties hanya berisi konfigurasi umum dan tidak mengandung data sensitif.
 
-Copy dari `env.example` dan isi dengan nilai yang sesuai:
+File .env sudah dimasukkan ke dalam .gitignore sehingga tidak akan di-commit.
 
-```bash
-# Database Configuration (PostgreSQL JDBC)
-DB_URL=jdbc:postgresql://your-database-host:5432/your-database-name
-DB_USERNAME=your_database_username
-DB_PASSWORD=your_database_password
-
-# Supabase Configuration (API)
-SUPABASE_URL=https://your-project-id.supabase.co
-SUPABASE_BUCKET_NAME=your_bucket_name
-SUPABASE_API_KEY=your_supabase_api_key
-```
-
-### 2. Cara Set Environment Variables
-
-#### Windows (PowerShell):
-```powershell
-$env:DB_URL="jdbc:postgresql://your-database-host:5432/your-database-name"
-$env:DB_USERNAME="your_database_username"
-$env:DB_PASSWORD="your_database_password"
-$env:SUPABASE_URL="https://your-project-id.supabase.co"
-$env:SUPABASE_BUCKET_NAME="your_bucket_name"
-$env:SUPABASE_API_KEY="your_supabase_api_key"
-```
-
-#### Windows (Command Prompt):
-```cmd
-set DB_URL=jdbc:postgresql://your-database-host:5432/your-database-name
-set DB_USERNAME=your_database_username
-set DB_PASSWORD=your_database_password
-set SUPABASE_URL=https://your-project-id.supabase.co
-set SUPABASE_BUCKET_NAME=your_bucket_name
-set SUPABASE_API_KEY=your_supabase_api_key
-```
-
-#### Linux/Mac:
-```bash
-export DB_URL="jdbc:postgresql://your-database-host:5432/your-database-name"
-export DB_USERNAME="your_database_username"
-export DB_PASSWORD="your_database_password"
-export SUPABASE_URL="https://your-project-id.supabase.co"
-export SUPABASE_BUCKET_NAME="your_bucket_name"
-export SUPABASE_API_KEY="your_supabase_api_key"
-```
-
-### 3. Run Application
-
-```bash
-./gradlew bootRun
-```
-
-## 🛡️ Keamanan
-
-✅ **File sensitif sudah diamankan:**
-- `application-dev.properties` - Hanya berisi environment variables, tidak ada data sensitif
-- `application.properties` - Konfigurasi umum tanpa data sensitif
-- `.env` dan `env.example` - Ditambahkan ke `.gitignore`
-- Tidak ada lagi API key atau password yang terekspos di file properties
-
-✅ **Yang perlu dilakukan:**
-- Set environment variables sebelum run aplikasi
-- Jangan commit file `.env` (sudah di-ignore)
-- Gunakan environment variables untuk production deployment
-
-## 🚨 Troubleshooting
-
-Jika aplikasi error "Could not resolve placeholder":
-1. **Pastikan environment variables sudah diset** dengan benar
-2. **Cek koneksi internet**
-3. **Pastikan API key Supabase masih valid**
-
-## 📁 Struktur File Konfigurasi
-
-```
-src/main/resources/
-├── application.properties          # Konfigurasi umum (aman)
-└── application-dev.properties     # Hanya env vars (aman)
-
-root/
-├── .env                           # File sensitif (tidak masuk git)
-├── env.example                    # Template (aman)
-└── .gitignore                     # Mengabaikan file sensitif
-```
+Disarankan untuk selalu menggunakan environment variables, terutama saat melakukan deployment di server production.
